@@ -4,6 +4,7 @@ from datasets import load_dataset
 from trl import SFTConfig, SFTTrainer
 import torch
 import os
+from transformers import pipeline
 
 device = (
     "cuda"
@@ -43,7 +44,7 @@ tokenizer.padding_side = "right"
 model.resize_token_embeddings(len(tokenizer))
 
 
-from transformers import pipeline
+
 # Let's test the base model before training
 prompt = "What is the primary function of mitochondria within a cell?"
 
