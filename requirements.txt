@@ -1,1 +1,6 @@
-pip install transformers datasets trl torch
+torch 
+transformers 
+datasets 
+peft 
+trl==1.16.0 
+accelerate
