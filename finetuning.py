@@ -52,8 +52,6 @@ pipe(prompt, max_new_tokens=100)
 # [{'generated_text': 'What is the primary function of mitochondria within a cell?\n\The function of the mitochondria is to produce energy for the cell through a process called cellular respiration.'}]
 
 
-from datasets import load_dataset
-
 ds = load_dataset("argilla/synthetic-concise-reasoning-sft-filtered")
 def tokenize_function(examples):
     examples["text"] = tokenizer.apply_chat_template([{"role": "user", "content": examples["prompt"].strip()}, {"role": "assistant", "content": examples["completion"].strip()}], tokenize=False)
