@@ -60,16 +60,48 @@ trainer = SFTTrainer(
 trainer.train()
 trainer.save_model(output_dir)
 
+system_prompt = (
+    "You are an AI assistant who provides brief and to-the-point responses "
+    "with logical step-by-step reasoning. Your purpose is to offer straightforward "
+    "explanations and answers so that you can get to the heart of the issue. "
+    "Respond with extremely concise, direct justifications and evidence-based conclusions."
+)
+user_query = "What is the primary function of mitochondria within a cell?"
+
+messages = [
+    {"role": "system", "content": system_prompt},
+    {"role": "user", "content": user_query},
+]
+
 trainer.model.eval()
 trainer.model.config.use_cache = True
 
-generator = pipeline("text-generation", model=trainer.model, tokenizer=tokenizer)
-out = generator(
-    messages,                      
+questions = [
+    "What is the primary function of mitochondria within a cell?",
+    "What causes acid rain?",
+    "What are the main reasons for declining or revoking diplomatic recognition of a country?",
+]
+
+batch = [
+    [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": q},
+    ]
+    for q in questions
+]
+
+tokenizer.padding_side = "left"   # needed for batched generation; training used "right"
+
+outs = generator(
+    batch,
     max_new_tokens=256,
     do_sample=True,
     temperature=0.2,
     repetition_penalty=1.1,
     return_full_text=False,
+    batch_size=3,
 )
-print(out[0]["generated_text"].strip())
+
+for q, o in zip(questions, outs):
+    print("Q:", q)
+    print("A:", o[0]["generated_text"].strip(), "\n")
