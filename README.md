@@ -1,4 +1,4 @@
-# Supervised tuning of a large language model
+# Supervised finetuning of a large language model
 This is my attempt to reproduce results from https://huggingface.co/blog/davidberenstein1957/fine-tune-a-smollm-on-synthetic-data-of-llm. I could not get the original code to work. The code here is updated to reflect some things which no longer work in the original tutorial. I also use LoRA whereas the original tutorial updates all of the model's weights. I rented GPUs from RunPod to run the code. Depending on what GPU you have, you may get a run-time error training. I had this problem and it went away after trying a different GPU. 
 
 Note that in the original tutorial, there are the following lines:
